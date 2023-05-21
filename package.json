@@ -1,0 +1,27 @@
+{
+  "name": "@faranalytics/nodejs_tcp_keepalive_study",
+  "version": "1.0.0",
+  "description": "Demonstrate TCP keepalive using Node.JS.",
+  "main": "./dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/faranalytics/nodejs_tcp_keepalive_study.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/faranalytics/nodejs_tcp_keepalive_study/issues"
+  },
+  "homepage": "https://github.com/faranalytics/nodejs_tcp_keepalive_study#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.22",
+    "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "@types/node": "^20.2.1"
+  },
+  "type":"module"
+}
