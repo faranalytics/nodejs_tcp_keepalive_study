@@ -3,7 +3,7 @@ import { Socket } from 'node:net';
 
 console.log('\n\n');
 
-let server = new Server({ keepAlive: true });
+let server = new Server({ keepAlive: true, keepAliveTimeout: 4000 });
 
 server.addListener('request', (req: IncomingMessage, res: ServerResponse) => {
 
@@ -39,8 +39,9 @@ server.addListener('connection', (socket: Socket) => {
     console.log("Socket.remotePort", socket.remotePort);
 })
 
-let agent = new Agent({ keepAlive: true, maxSockets: 1, timeout: 2000});
+let agent = new Agent({ keepAlive: true, maxSockets: 1, timeout: 2000 });
 
+// The agent will keep the socket open for 2 seconds.
 let req0 = request(
     {
         agent: agent,
@@ -55,7 +56,7 @@ let req0 = request(
 
 req0.end("0");
 
-//  The Socket is still open; hence, make another request using the same destination port number (same socket).
+// The Socket is still open; hence, make another request using the same destination port number (i.e., the same socket).
 let req1 = request(
     {
         agent: agent,
@@ -66,13 +67,15 @@ let req1 = request(
     }, (res: IncomingMessage) => {
         console.log(res.headers);
         res.resume();
+        // Drain the Readable.
     });
 
 req1.end("1");
 
 
 setTimeout(() => {
-    //  Use the same agent to make another request.  The Socket has been closed; hence, this request will likely have a different destination port number.
+    // Use the same agent to make another request.
+    // The Socket has been closed (> 2000ms); hence, this request will likely have a different destination port number (i.e., a new Socket).
     let req2 = request(
         {
             agent: agent,
@@ -83,6 +86,7 @@ setTimeout(() => {
         }, (res: IncomingMessage) => {
             console.log(res.headers);
             res.resume();
+            // Drain the Readable.
         });
 
     req2.end("2");
